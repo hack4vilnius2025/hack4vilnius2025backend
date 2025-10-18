@@ -4,6 +4,7 @@ import { Forum } from '../models/forum.entity';
 export interface UpdateForumInput {
   title?: string;
   body?: string;
+  address?: string;
 }
 
 export class UpdateForumService {
@@ -30,6 +31,9 @@ export class UpdateForumService {
     }
     if (input.body !== undefined) {
       forum.body = input.body;
+    }
+    if (input.address !== undefined) {
+      forum.address = input.address;
     }
 
     // Save updated forum

@@ -492,6 +492,10 @@ paths:
                         body:
                           type: string
                           example: This is the forum content
+                        address:
+                          type: string
+                          nullable: true
+                          example: 123 Main Street, Vilnius
                         createdAt:
                           type: string
                           format: date-time
@@ -563,6 +567,10 @@ paths:
                 body:
                   type: string
                   example: This is the forum content
+                address:
+                  type: string
+                  nullable: true
+                  example: 123 Main Street, Vilnius
       responses:
         '201':
           description: Forum created successfully
@@ -585,6 +593,10 @@ paths:
                   body:
                     type: string
                     example: This is the forum content
+                  address:
+                    type: string
+                    nullable: true
+                    example: 123 Main Street, Vilnius
                   createdAt:
                     type: string
                     format: date-time
@@ -623,7 +635,7 @@ paths:
                     type: string
                     example: Internal server error
 
-  /api/forums/{code}:
+  /api/forums/{forumCode}:
     patch:
       summary: Update forum
       description: Update an existing forum post (only by owner)
@@ -633,7 +645,7 @@ paths:
         - BearerAuth: []
       parameters:
         - in: path
-          name: code
+          name: forumCode
           required: true
           schema:
             type: string
@@ -644,16 +656,20 @@ paths:
         required: true
         content:
           application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                  example: Updated Forum Title
-                body:
-                  type: string
-                  example: Updated forum content
-      responses:
+             schema:
+               type: object
+               properties:
+                 title:
+                   type: string
+                   example: Updated Forum Title
+                 body:
+                   type: string
+                   example: Updated forum content
+                 address:
+                   type: string
+                   nullable: true
+                   example: 456 New Street, Vilnius
+       responses:
         '200':
           description: Forum updated successfully
           content:
@@ -669,30 +685,34 @@ paths:
                     type: string
                     format: uuid
                     example: 660e8400-e29b-41d4-a716-446655440001
-                  title:
-                    type: string
-                    example: Updated Forum Title
-                  body:
-                    type: string
-                    example: Updated forum content
-                  createdAt:
-                    type: string
-                    format: date-time
-                    example: 2025-10-18T10:30:00.000Z
-                  updatedAt:
-                    type: string
-                    format: date-time
-                    example: 2025-10-18T14:30:00.000Z
-        '400':
-          description: Bad request - Missing required fields or validation error
+                   title:
+                     type: string
+                     example: Updated Forum Title
+                   body:
+                     type: string
+                     example: Updated forum content
+                   address:
+                     type: string
+                     nullable: true
+                     example: 456 New Street, Vilnius
+                   createdAt:
+                     type: string
+                     format: date-time
+                     example: 2025-10-18T10:30:00.000Z
+                   updatedAt:
+                     type: string
+                     format: date-time
+                     example: 2025-10-18T14:30:00.000Z
+         '400':
+           description: Bad request - Missing required fields or validation error
           content:
             application/json:
               schema:
                 type: object
-                properties:
-                  error:
-                    type: string
-                    example: At least one field (title or body) must be provided for update
+                 properties:
+                   error:
+                     type: string
+                     example: At least one field (title, body, or address) must be provided for update
         '401':
           description: Unauthorized - No token provided
           content:
@@ -891,6 +911,10 @@ paths:
                     body:
                       type: string
                       example: This is the forum content
+                    address:
+                      type: string
+                      nullable: true
+                      example: 123 Main Street, Vilnius
                     createdAt:
                       type: string
                       format: date-time

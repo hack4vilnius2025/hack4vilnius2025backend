@@ -21,6 +21,9 @@ export class Forum {
     @Column({ name: 'body' })
     body: string;
 
+    @Column({ name: 'address', nullable: true })
+    address: string;
+
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;
 
