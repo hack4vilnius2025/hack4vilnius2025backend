@@ -4,12 +4,12 @@ import { CreateUserService } from '../domain/create-user.service';
 export class AuthController {
   async register(req: Request, res: Response): Promise<void> {
     try {
-      const { email, password, firstName, lastName, address } = req.body;
+      const { email, password, name, address } = req.body;
 
       // Validate required fields
-      if (!email || !password || !firstName || !lastName) {
+      if (!email || !password || !name) {
         res.status(400).json({
-          error: 'Missing required fields: email, password, firstName, lastName',
+          error: 'Missing required fields: email, password, name',
         });
         return;
       }
@@ -19,8 +19,7 @@ export class AuthController {
       const user = await createUserService.run({
         email,
         password,
-        firstName,
-        lastName,
+        name,
         address,
       });
 
@@ -28,8 +27,7 @@ export class AuthController {
       res.status(201).json({
         id: user.id,
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
+        name: user.name,
         address: user.address,
         createdAt: user.createdAt,
       });

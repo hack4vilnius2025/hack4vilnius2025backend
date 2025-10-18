@@ -126,8 +126,7 @@ You can also view and edit the API documentation using [Swagger Editor](https://
   {
     "email": "user@example.com",
     "password": "password123",
-    "firstName": "John",
-    "lastName": "Doe",
+    "name": "John Doe",
     "address": "123 Main St" // optional
   }
   ```
