@@ -636,6 +636,116 @@ paths:
                     example: Internal server error
 
   /api/forums/{code}:
+    patch:
+      summary: Update forum
+      description: Update an existing forum post (only by owner)
+      tags:
+        - Forums
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique code of the forum to update
+          example: 770e8400-e29b-41d4-a716-446655440002
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Updated Forum Title
+                body:
+                  type: string
+                  example: Updated forum content
+      responses:
+        '200':
+          description: Forum updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    format: uuid
+                    example: 770e8400-e29b-41d4-a716-446655440002
+                  userCode:
+                    type: string
+                    format: uuid
+                    example: 660e8400-e29b-41d4-a716-446655440001
+                  title:
+                    type: string
+                    example: Updated Forum Title
+                  body:
+                    type: string
+                    example: Updated forum content
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2025-10-18T10:30:00.000Z
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: 2025-10-18T14:30:00.000Z
+        '400':
+          description: Bad request - Missing required fields or validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: At least one field (title or body) must be provided for update
+        '401':
+          description: Unauthorized - No token provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '403':
+          description: Forbidden - Only the creator can update this forum
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Only the creator can update this forum
+        '404':
+          description: Not found - Forum does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Forum not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
+
     delete:
       summary: Delete forum
       description: Delete a forum post (only by owner)
@@ -714,6 +824,53 @@ paths:
                     type: string
                     example: Internal server error
 
+  /api/forums/{forumCode}/approvals:
+    post:
+      summary: Create forum approval
+      description: Create a forum approval by approving a forum post
+      tags:
+        - Forum Approvals
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: forumCode
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique code of the forum to approve
+          example: 770e8400-e29b-41d4-a716-446655440002
+      responses:
+        '201':
+          description: Forum approval created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userCode:
+                    type: string
+                    format: uuid
+                    example: 660e8400-e29b-41d4-a716-446655440001
+                  forumCode:
+                    type: string
+                    format: uuid
+                    example: 770e8400-e29b-41d4-a716-446655440002
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2025-10-18T10:30:00.000Z
+        '400':
+          description: Bad request - Missing required parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing required parameter: forumCode
   /api/users/forums:
     get:
       summary: Get current user's forums
@@ -764,6 +921,8 @@ paths:
                   error:
                     type: string
                     example: Unauthorized
+        '403':
+          description: Forbidden - Cannot approve own forum
         '400':
           description: Bad request
           content:
@@ -773,6 +932,27 @@ paths:
                 properties:
                   error:
                     type: string
+                    example: Cannot approve your own forum
+        '404':
+          description: Not found - Forum or user does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Forum not found
+        '409':
+          description: Conflict - Forum already approved by this user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Forum already approved by this user
                     example: Error retrieving forums
         '500':
           description: Internal server error
@@ -794,4 +974,6 @@ tags:
     description: User management endpoints
   - name: Forums
     description: Forum management endpoints
+  - name: Forum Approvals
+    description: Forum approval management endpoints
 
