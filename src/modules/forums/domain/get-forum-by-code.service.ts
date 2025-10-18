@@ -1,7 +1,5 @@
 import { AppDataSource } from '../../../data-source';
 import { Forum } from '../models/forum.entity';
-import { User } from '../../auth/models/user.entity';
-import { ForumApproval } from '../models/forum-approval.entity';
 
 interface ForumWithUserInfo {
     code: string;
@@ -23,23 +21,33 @@ export class GetForumByCodeService {
     const result = await AppDataSource
       .getRepository(Forum)
       .createQueryBuilder('forum')
-      .innerJoin(User, 'user', 'user.code = forum.userCode')
-      .leftJoin(ForumApproval, 'approval', 'approval.forum = forum.id')
+      .leftJoin('users', 'user', 'user.code = forum.userCode')
+      .leftJoin('forum_approvals', 'approval', 'approval.forum_id = forum.id')
       .select([
-        'forum.code as code',
-        'forum.userCode as userCode',
+        'forum.code',
+        'forum.userCode',
         'user.name as userName',
         'user.image as userImage',
-        'forum.title as title',
-        'forum.body as body',
-        'forum.address as address',
-        'forum.language as language',
+        'forum.title',
+        'forum.body',
+        'forum.address',
+        'forum.language',
         'COUNT(approval.id) as approvalCount',
-        'forum.createdAt as createdAt',
-        'forum.updatedAt as updatedAt'
+        'forum.createdAt',
+        'forum.updatedAt'
       ])
       .where('forum.code = :forumCode', { forumCode })
-      .groupBy('forum.id, forum.code, forum.userCode, user.name, user.image, forum.title, forum.body, forum.address, forum.language, forum.createdAt, forum.updatedAt')
+      .groupBy('forum.id')
+      .addGroupBy('forum.code')
+      .addGroupBy('forum.userCode')
+      .addGroupBy('userName')
+      .addGroupBy('userImage')
+      .addGroupBy('forum.title')
+      .addGroupBy('forum.body')
+      .addGroupBy('forum.address')
+      .addGroupBy('forum.language')
+      .addGroupBy('forum.createdAt')
+      .addGroupBy('forum.updatedAt')
       .getRawOne();
 
     if (!result) {
@@ -47,17 +55,17 @@ export class GetForumByCodeService {
     }
 
     return {
-      code: result.code,
-      userCode: result.usercode,
-      userName: result.username,
-      userImage: result.userimage,
-      title: result.title,
-      body: result.body,
-      address: result.address,
-      language: result.language,
-      approvalCount: parseInt(result.approvalcount) || 0,
-      createdAt: result.createdat,
-      updatedAt: result.updatedat
+      code: result.forum_code,
+      userCode: result.forum_userCode,
+      userName: result.userName,
+      userImage: result.userImage,
+      title: result.forum_title,
+      body: result.forum_body,
+      address: result.forum_address,
+      language: result.forum_language,
+      approvalCount: parseInt(result.approvalCount) || 0,
+      createdAt: result.forum_createdAt,
+      updatedAt: result.forum_updatedAt
     };
   }
 }
