@@ -185,17 +185,8 @@ export class ForumsController {
       const getUserForumsService = new GetUserForumsService();
       const forums = await getUserForumsService.run(userCode);
 
-      // Return success response (excluding id and deletedAt)
-      res.status(200).json(
-        forums.map((forum) => ({
-          code: forum.code,
-          userCode: forum.userCode,
-          title: forum.title,
-          body: forum.body,
-          address: forum.address,
-          createdAt: forum.createdAt
-        }))
-      );
+      // Return success response (service already returns formatted data)
+      res.status(200).json(forums);
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ error: error.message });
