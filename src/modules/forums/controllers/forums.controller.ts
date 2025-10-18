@@ -77,7 +77,7 @@ export class ForumsController {
     try {
       const userCode = req.userCode;
       const { forumCode } = req.params;
-      const { title, body } = req.body;
+      const { title, body, address } = req.body;
 
       if (!userCode) {
         res.status(401).json({ error: 'Unauthorized' });
@@ -90,9 +90,9 @@ export class ForumsController {
       }
 
       // At least one field must be provided for update
-      if (!title && !body) {
+      if (!title && !body && !address) {
         res.status(400).json({
-          error: 'At least one field (title or body) must be provided for update',
+          error: 'At least one field (title, body, or address) must be provided for update',
         });
         return;
       }
@@ -102,6 +102,7 @@ export class ForumsController {
       const forum = await updateForumService.run(forumCode, userCode, {
         title,
         body,
+        address,
       });
 
       // Return success response (excluding id)
@@ -110,6 +111,7 @@ export class ForumsController {
         userCode: forum.userCode,
         title: forum.title,
         body: forum.body,
+        address: forum.address,
         createdAt: forum.createdAt,
         updatedAt: forum.updatedAt,
       });
