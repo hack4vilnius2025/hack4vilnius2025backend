@@ -9,7 +9,7 @@ export class Forum {
     @Generated('uuid')
     code: string;
 
-    @Column({ type: 'uuid', name: 'user_code' })
+    @Column({ length: 36, name: 'user_code' })
     @Index()
     userCode: string;
 

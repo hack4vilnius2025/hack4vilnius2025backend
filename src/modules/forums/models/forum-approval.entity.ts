@@ -7,7 +7,7 @@ export class ForumApproval {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'uuid', name: 'user_code' })
+  @Column({ length: 36, name: 'user_code' })
   userCode: string;
 
   @ManyToOne(() => Forum)

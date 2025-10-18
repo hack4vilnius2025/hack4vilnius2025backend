@@ -6,7 +6,7 @@ export class Comment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ length: 36 })
   @Generated('uuid')
   @Index()
   code: string;
