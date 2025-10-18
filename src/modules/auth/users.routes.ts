@@ -5,11 +5,11 @@ import { authGuard } from '../../middleware/auth.middleware';
 const router = Router();
 const usersController = new UsersController();
 
-// PUT /api/users/profile - Update user profile (protected)
-router.put('/profile', authGuard, (req, res) => usersController.updateProfile(req, res));
+// PUT /api/users - Update user profile (protected)
+router.put('/', authGuard, (req, res) => usersController.updateProfile(req, res));
 
-// PATCH /api/users/profile - Update user profile (protected)
-router.patch('/profile', authGuard, (req, res) => usersController.updateProfile(req, res));
+// PATCH /api/users - Partially update user profile (protected)
+router.patch('/', authGuard, (req, res) => usersController.updateProfile(req, res));
 
 export default router;
 
