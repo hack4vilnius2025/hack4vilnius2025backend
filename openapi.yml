@@ -1065,6 +1065,86 @@ paths:
                     example: Internal server error
 
   /api/forums/{forumCode}/comments:
+    get:
+      summary: Get comments for forum
+      description: Retrieve all comments for a specific forum post
+      tags:
+        - Comments
+      parameters:
+        - in: path
+          name: forumCode
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique code of the forum to get comments for
+          example: 770e8400-e29b-41d4-a716-446655440002
+      responses:
+        '200':
+          description: Comments retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                      format: uuid
+                      example: 880e8400-e29b-41d4-a716-446655440003
+                    userCode:
+                      type: string
+                      format: uuid
+                      example: 660e8400-e29b-41d4-a716-446655440001
+                    userName:
+                      type: string
+                      example: John Doe
+                    userImage:
+                      type: string
+                      nullable: true
+                      example: https://example.com/avatar.jpg
+                    commentText:
+                      type: string
+                      example: This is a great forum post!
+                    createdAt:
+                      type: string
+                      format: date-time
+                      example: 2025-10-19T10:30:00.000Z
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      example: 2025-10-19T10:30:00.000Z
+        '400':
+          description: Bad request - Missing required parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing required parameter: forumCode
+        '404':
+          description: Not found - Forum does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Forum not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
     post:
       summary: Create comment on forum
       description: Add a comment to a specific forum post

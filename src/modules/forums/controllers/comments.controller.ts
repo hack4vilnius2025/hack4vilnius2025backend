@@ -3,6 +3,7 @@ import { AuthRequest } from '../../../middleware/auth.middleware';
 import { CreateCommentService } from '../domain/create-comment.service';
 import { UpdateCommentService } from '../domain/update-comment.service';
 import { DeleteCommentService } from '../domain/delete-comment.service';
+import { GetCommentsByForumCodeService } from '../domain/get-comments-by-forum-code.service';
 
 export class CommentsController {
   async create(req: AuthRequest, res: Response): Promise<void> {
@@ -148,6 +149,37 @@ export class CommentsController {
           res.status(404).json({ error: error.message });
         } else if (error.message === 'Unauthorized to delete this comment') {
           res.status(403).json({ error: error.message });
+        } else {
+          res.status(400).json({ error: error.message });
+        }
+      } else {
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    }
+  }
+
+  async getByForumCode(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      const { forumCode } = req.params;
+
+      // Validate required parameters
+      if (!forumCode) {
+        res.status(400).json({
+          error: 'Missing required parameter: forumCode',
+        });
+        return;
+      }
+
+      // Get comments using the service
+      const getCommentsService = new GetCommentsByForumCodeService();
+      const comments = await getCommentsService.run(forumCode);
+
+      // Return success response
+      res.status(200).json(comments);
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message === 'Forum not found') {
+          res.status(404).json({ error: error.message });
         } else {
           res.status(400).json({ error: error.message });
         }
