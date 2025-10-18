@@ -16,14 +16,14 @@ export class Comment {
   userId: string;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @Column({ type: 'uuid' })
   forumId: string;
 
   @ManyToOne(() => Forum)
-  @JoinColumn({ name: 'forumId' })
+  @JoinColumn({ name: 'forum_id' })
   forum: Forum;
 
   @Column('text')

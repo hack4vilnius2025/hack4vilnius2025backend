@@ -11,11 +11,11 @@ export class ForumApproval {
   userId: string;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @ManyToOne(() => Forum)
-  @JoinColumn({ name: 'forumId' })
+  @JoinColumn({ name: 'forum_id' })
   forum: Forum;
 
   @Column({ type: 'uuid' })
