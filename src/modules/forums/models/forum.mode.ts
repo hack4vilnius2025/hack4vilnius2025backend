@@ -8,17 +8,8 @@ export class Forum {
     @Generated('uuid')
     code: string;
 
-    @CreateDateColumn({ name: 'created_at' })
-    createdAt: Date;
-
-    @DeleteDateColumn({ name: 'deleted_at' })
-    deletedAt: Date;
-
-    @UpdateDateColumn({ name: 'updated_at '})
-    updatedAt: Date;
-
     @Column({ name: 'creator_user_id' })
-    creatorUserId: number;
+    userId: number;
 
     @Column({ name: 'title' })
     title: string;
@@ -28,4 +19,13 @@ export class Forum {
 
     @Column({ name: 'image_url', array: true })
     imageUrls: string[];
+
+    @CreateDateColumn({ name: 'created_at' })
+    createdAt: Date;
+
+    @DeleteDateColumn({ name: 'deleted_at' })
+    deletedAt: Date;
+
+    @UpdateDateColumn({ name: 'updated_at '})
+    updatedAt: Date;
 }
