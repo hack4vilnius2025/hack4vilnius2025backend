@@ -94,12 +94,33 @@ Stop and remove data:
 docker-compose down -v
 ```
 
-## 📚 API Endpoints
+## 📚 API Documentation
 
-### Health Check
+### Interactive API Docs
+
+The API documentation is available via Swagger UI at:
+- **URL**: `http://localhost:3000/api-docs`
+
+When the server is running, you can access the interactive API documentation in your browser. This interface allows you to:
+- View all available endpoints
+- See request/response schemas
+- Test API calls directly from the browser
+
+### Using with Swagger Editor
+
+You can also view and edit the API documentation using [Swagger Editor](https://editor.swagger.io/):
+
+1. Copy the contents of `openapi.yml` file from the project root
+2. Go to https://editor.swagger.io/
+3. Paste the contents into the editor
+4. The documentation will be rendered on the right side
+
+### API Endpoints
+
+#### Health Check
 - `GET /health` - Check server status
 
-### Authentication
+#### Authentication
 - `POST /api/auth/register` - Register new user
   ```json
   {
@@ -143,6 +164,7 @@ docker-compose down -v
 - **TypeORM** - ORM for database operations
 - **MySQL** - Relational database
 - **Docker** - Containerization
+- **Swagger UI** - API documentation
 
 ## 📄 License
 
