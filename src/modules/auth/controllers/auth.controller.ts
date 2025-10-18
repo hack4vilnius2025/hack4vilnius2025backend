@@ -24,9 +24,9 @@ export class AuthController {
         address,
       });
 
-      // Return success response (excluding password)
+      // Return success response (excluding password and id)
       res.status(201).json({
-        id: user.id,
+        code: user.code,
         email: user.email,
         name: user.name,
         address: user.address,

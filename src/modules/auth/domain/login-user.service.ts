@@ -37,7 +37,7 @@ export class LoginUserService {
     const jwtExpiresIn = process.env.JWT_EXPIRES_IN || '7d';
 
     const accessToken = jwt.sign(
-      { userId: user.id, email: user.email },
+      { userCode: user.code, email: user.email },
       jwtSecret,
       { expiresIn: jwtExpiresIn }
     );
