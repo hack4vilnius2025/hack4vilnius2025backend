@@ -2,12 +2,12 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { Forum } from './forum.entity';
 
 @Entity('forum_approvals')
+@Index(['userCode', 'forum'], { unique: true })
 export class ForumApproval {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({ type: 'uuid', name: 'user_code' })
-  @Index()
   userCode: string;
 
   @ManyToOne(() => Forum)
