@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, Index } from 'typeorm';
 import { User } from '../../auth/models/user.entity';
 import { Petition } from './petition.entity';
 
 @Entity('petition_approvals')
+@Index(['userCode', 'petition'], { unique: true })
 export class PetitionApproval {
   @PrimaryGeneratedColumn()
   id: string;
@@ -14,10 +15,10 @@ export class PetitionApproval {
   @JoinColumn({ name: 'petition_id' })
   petition: Petition;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }
 
