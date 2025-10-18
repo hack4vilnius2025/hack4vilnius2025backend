@@ -1267,6 +1267,65 @@ paths:
                   error:
                     type: string
                     example: Internal server error
+    delete:
+      summary: Delete comment
+      description: Delete a comment (only by the creator)
+      tags:
+        - Comments
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: commentCode
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique code of the comment to delete
+          example: 880e8400-e29b-41d4-a716-446655440003
+      responses:
+        '204':
+          description: Comment deleted successfully
+        '401':
+          description: Unauthorized - No token provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '403':
+          description: Forbidden - Only comment creator can delete
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized to delete this comment
+        '404':
+          description: Not found - Comment does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Comment not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
 
   /api/users/forums:
     get:
