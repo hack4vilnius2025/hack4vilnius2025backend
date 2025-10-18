@@ -877,16 +877,8 @@ paths:
           description: The unique code of the forum to unapprove
           example: 770e8400-e29b-41d4-a716-446655440002
       responses:
-        '200':
+        '204':
           description: Forum approval deleted successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Forum approval deleted successfully
         '400':
           description: Bad request - Missing required parameter
           content:
