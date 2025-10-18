@@ -1,10 +1,11 @@
 import { AppDataSource } from '../../../data-source';
-import { Forum } from '../models/forum.entity';
+import { Forum, ForumLanguage } from '../models/forum.entity';
 
 export interface CreateForumInput {
   title: string;
   body: string;
   address?: string;
+  language?: ForumLanguage;
 }
 
 export class CreateForumService {
@@ -17,6 +18,7 @@ export class CreateForumService {
       title: input.title,
       body: input.body,
       address: input.address,
+      language: input.language || ForumLanguage.EN,
     });
 
     // Save forum to database
