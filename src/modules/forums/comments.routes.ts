@@ -8,4 +8,7 @@ const commentsController = new CommentsController();
 // POST /api/forums/:forumCode/comments - Create new comment (protected)
 router.post('/:forumCode/comments', authGuard, (req, res) => commentsController.create(req, res));
 
+// PATCH /api/comments/:commentCode - Update comment (protected)
+router.patch('/comments/:commentCode', authGuard, (req, res) => commentsController.update(req, res));
+
 export default router;
