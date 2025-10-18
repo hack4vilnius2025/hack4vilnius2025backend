@@ -11,4 +11,7 @@ router.post('/:forumCode/comments', authGuard, (req, res) => commentsController.
 // PATCH /api/comments/:commentCode - Update comment (protected)
 router.patch('/comments/:commentCode', authGuard, (req, res) => commentsController.update(req, res));
 
+// DELETE /api/comments/:commentCode - Delete comment (protected)
+router.delete('/comments/:commentCode', authGuard, (req, res) => commentsController.delete(req, res));
+
 export default router;

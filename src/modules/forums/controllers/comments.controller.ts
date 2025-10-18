@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { AuthRequest } from '../../../middleware/auth.middleware';
 import { CreateCommentService } from '../domain/create-comment.service';
 import { UpdateCommentService } from '../domain/update-comment.service';
+import { DeleteCommentService } from '../domain/delete-comment.service';
 
 export class CommentsController {
   async create(req: AuthRequest, res: Response): Promise<void> {
@@ -106,6 +107,46 @@ export class CommentsController {
         if (error.message === 'Comment not found') {
           res.status(404).json({ error: error.message });
         } else if (error.message === 'Unauthorized to update this comment') {
+          res.status(403).json({ error: error.message });
+        } else {
+          res.status(400).json({ error: error.message });
+        }
+      } else {
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    }
+  }
+
+  async delete(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      const userCode = req.userCode;
+
+      if (!userCode) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+      }
+
+      const { commentCode } = req.params;
+
+      // Validate required parameters
+      if (!commentCode) {
+        res.status(400).json({
+          error: 'Missing required parameter: commentCode',
+        });
+        return;
+      }
+
+      // Delete comment using the service
+      const deleteCommentService = new DeleteCommentService();
+      await deleteCommentService.run(commentCode, userCode);
+
+      // Return success response
+      res.status(204).send();
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message === 'Comment not found') {
+          res.status(404).json({ error: error.message });
+        } else if (error.message === 'Unauthorized to delete this comment') {
           res.status(403).json({ error: error.message });
         } else {
           res.status(400).json({ error: error.message });
