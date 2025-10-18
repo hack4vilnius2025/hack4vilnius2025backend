@@ -213,7 +213,7 @@ export class ForumsController {
       const getForumByCodeService = new GetForumByCodeService();
       const forum = await getForumByCodeService.run(code);
 
-      // Return success response with user information
+      // Return success response with user information and approval count
       res.status(200).json({
         code: forum.code,
         userCode: forum.userCode,
@@ -222,6 +222,7 @@ export class ForumsController {
         title: forum.title,
         body: forum.body,
         address: forum.address,
+        approvalCount: forum.approvalCount,
         createdAt: forum.createdAt,
         updatedAt: forum.updatedAt,
       });
