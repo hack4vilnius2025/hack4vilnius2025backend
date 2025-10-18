@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from '../../../middleware/auth.middleware';
 import { UpdateUserService } from '../domain/update-user.service';
+import { SoftDeleteUserService } from '../domain/soft-delete-user.service';
 
 export class UsersController {
   async updateProfile(req: AuthRequest, res: Response): Promise<void> {
@@ -32,6 +33,28 @@ export class UsersController {
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({ error: error.message });
+      } else {
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    }
+  }
+
+  async softDelete(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      const userCode = req.userCode;
+
+      if (!userCode) {
+        res.status(401).json({ error: 'Unauthorized'});
+        return;
+      }
+
+      const softDeleteUserService = new SoftDeleteUserService();
+      softDeleteUserService.run(userCode);
+
+      res.status(204);
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ error: error.message });
