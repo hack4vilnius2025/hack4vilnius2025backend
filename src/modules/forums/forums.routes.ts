@@ -14,5 +14,8 @@ router.patch('/', authGuard, (req, res) => forumsController.update(req, res));
 // DELETE /api/forums/:code - Delete forum (protected)
 router.delete('/:code', authGuard, (req, res) => forumsController.delete(req, res));
 
+// POST /api/forums/:forumCode/approvals - Approve forum (protected)
+router.post('/:forumCode/approvals', authGuard, (req, res) => forumsController.approve(req, res));
+
 export default router;
 

@@ -604,6 +604,104 @@ paths:
                     type: string
                     example: Internal server error
 
+  /api/forums/{forumCode}/approvals:
+    post:
+      summary: Approve a forum
+      description: Approve a forum post by providing a positive reaction
+      tags:
+        - Forums
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: forumCode
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique code of the forum to approve
+          example: 770e8400-e29b-41d4-a716-446655440002
+      responses:
+        '201':
+          description: Forum approved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userCode:
+                    type: string
+                    format: uuid
+                    example: 660e8400-e29b-41d4-a716-446655440001
+                  forumCode:
+                    type: string
+                    format: uuid
+                    example: 770e8400-e29b-41d4-a716-446655440002
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2025-10-18T10:30:00.000Z
+        '400':
+          description: Bad request - Missing required parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing required parameter: forumCode
+        '401':
+          description: Unauthorized - No token provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '403':
+          description: Forbidden - Cannot approve own forum
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Cannot approve your own forum
+        '404':
+          description: Not found - Forum or user does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Forum not found
+        '409':
+          description: Conflict - Forum already approved by this user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Forum already approved by this user
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
+
 tags:
   - name: System
     description: System health and status endpoints
