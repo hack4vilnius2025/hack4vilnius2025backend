@@ -357,6 +357,48 @@ paths:
                     type: string
                     example: Internal server error
 
+  /api/users/soft-delete:
+    delete:
+      summary: Soft delete user
+      description: Soft delete the authenticated user's account (marks as deleted without permanently removing data)
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: User soft deleted successfully
+        '400':
+          description: Bad request - User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+        '401':
+          description: Unauthorized - No token provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: No token provided
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
+
 tags:
   - name: System
     description: System health and status endpoints
