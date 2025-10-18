@@ -33,13 +33,17 @@ export class LoginUserService {
     }
 
     // Generate JWT token
-    const jwtSecret = process.env.JWT_SECRET || 'default-secret';
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      throw new Error('JWT_SECRET environment variable is not defined');
+    }
+    
     const jwtExpiresIn = process.env.JWT_EXPIRES_IN || '7d';
 
     const accessToken = jwt.sign(
       { userCode: user.code, email: user.email },
       jwtSecret,
-      { expiresIn: jwtExpiresIn }
+      { expiresIn: jwtExpiresIn } as jwt.SignOptions
     );
 
     return {

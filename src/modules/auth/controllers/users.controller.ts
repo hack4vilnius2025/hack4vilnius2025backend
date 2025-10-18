@@ -52,7 +52,7 @@ export class UsersController {
       }
 
       const softDeleteUserService = new SoftDeleteUserService();
-      softDeleteUserService.run(userCode);
+      await softDeleteUserService.run(userCode);
 
       res.status(204);
     } catch (error) {
