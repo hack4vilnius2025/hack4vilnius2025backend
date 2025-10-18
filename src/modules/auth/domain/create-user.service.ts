@@ -4,8 +4,7 @@ import { User } from '../models/user.entity';
 export interface CreateUserInput {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   address?: string;
 }
 
@@ -26,8 +25,7 @@ export class CreateUserService {
     const user = userRepository.create({
       email: input.email,
       password: input.password, // Note: In production, hash the password before storing
-      firstName: input.firstName,
-      lastName: input.lastName,
+      name: input.name,
       address: input.address,
     });
 
