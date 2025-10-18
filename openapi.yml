@@ -1262,6 +1262,125 @@ paths:
                     type: string
                     example: Internal server error
 
+  /api/petitions/{code}:
+    patch:
+      summary: Update petition
+      description: Update an existing petition (only by creator)
+      tags:
+        - Petitions
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique code of the petition to update
+          example: 880e8400-e29b-41d4-a716-446655440004
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Updated Petition Name
+                description:
+                  type: string
+                  example: Updated petition description
+                address:
+                  type: string
+                  nullable: true
+                  example: Updated Street 20, Vilnius
+      responses:
+        '200':
+          description: Petition updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    format: uuid
+                    example: 880e8400-e29b-41d4-a716-446655440004
+                  userCode:
+                    type: string
+                    format: uuid
+                    example: 660e8400-e29b-41d4-a716-446655440001
+                  name:
+                    type: string
+                    example: Updated Petition Name
+                  description:
+                    type: string
+                    example: Updated petition description
+                  address:
+                    type: string
+                    nullable: true
+                    example: Updated Street 20, Vilnius
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2025-10-18T10:30:00.000Z
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: 2025-10-18T14:30:00.000Z
+        '400':
+          description: Bad request - Missing required fields or validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: At least one field (name, description, or address) must be provided for update
+        '401':
+          description: Unauthorized - No token provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '403':
+          description: Forbidden - Only the creator can update this petition
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Only the creator can update this petition
+        '404':
+          description: Not found - Petition does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Petition not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
+
 tags:
   - name: System
     description: System health and status endpoints
