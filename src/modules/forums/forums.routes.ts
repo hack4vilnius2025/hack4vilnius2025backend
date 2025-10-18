@@ -5,6 +5,9 @@ import { authGuard } from '../../middleware/auth.middleware';
 const router = Router();
 const forumsController = new ForumsController();
 
+// GET /api/forums - Get paginated forums with approval counts (public)
+router.get('/', (req, res) => forumsController.getPaginatedForums(req, res));
+
 // POST /api/forums - Create new forum (protected)
 router.post('/', authGuard, (req, res) => forumsController.create(req, res));
 

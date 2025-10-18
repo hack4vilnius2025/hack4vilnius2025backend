@@ -1,10 +1,32 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { AuthRequest } from '../../../middleware/auth.middleware';
 import { CreateForumService } from '../domain/create-forum.service';
 import { DeleteForumService } from '../domain/delete-forum.service';
 import { GetUserForumsService } from '../domain/get-user-forums.service';
+import { GetPaginatedForumsService } from '../domain/get-paginated-forums.service';
 
 export class ForumsController {
+  async getPaginatedForums(req: Request, res: Response): Promise<void> {
+    try {
+      // Parse pagination parameters from query string
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      // Get paginated forums with approval counts
+      const getPaginatedForumsService = new GetPaginatedForumsService();
+      const result = await getPaginatedForumsService.run(page, limit);
+
+      // Return success response
+      res.status(200).json(result);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({ error: error.message });
+      } else {
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    }
+  }
+
   async create(req: AuthRequest, res: Response): Promise<void> {
     try {
       const userCode = req.userCode;
