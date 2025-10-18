@@ -8,6 +8,7 @@ import { AppDataSource } from './data-source';
 import authRoutes from './modules/auth/auth.routes';
 import usersRoutes from './modules/auth/users.routes';
 import forumsRoutes from './modules/forums/forums.routes';
+import forumApprovalsRoutes from './modules/forums/forum-approvals.routes';
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
@@ -37,6 +38,7 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/forums', forumsRoutes);
+app.use('/api/forums', forumApprovalsRoutes)
 
 AppDataSource.initialize()
   .then(() => {

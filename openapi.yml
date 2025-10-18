@@ -606,10 +606,10 @@ paths:
 
   /api/forums/{forumCode}/approvals:
     post:
-      summary: Approve a forum
-      description: Approve a forum post by providing a positive reaction
+      summary: Create forum approval
+      description: Create a forum approval by approving a forum post
       tags:
-        - Forums
+        - Forum Approvals
       security:
         - BearerAuth: []
       parameters:
@@ -623,7 +623,7 @@ paths:
           example: 770e8400-e29b-41d4-a716-446655440002
       responses:
         '201':
-          description: Forum approved successfully
+          description: Forum approval created successfully
           content:
             application/json:
               schema:
@@ -711,4 +711,6 @@ tags:
     description: User management endpoints
   - name: Forums
     description: Forum management endpoints
+  - name: Forum Approvals
+    description: Forum approval management endpoints
 
