@@ -6,7 +6,7 @@ export class Forum {
     id: number;
 
     @Generated('uuid')
-    uuid: string;
+    code: string;
 
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;
