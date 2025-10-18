@@ -5,6 +5,9 @@ import { authGuard } from '../../middleware/auth.middleware';
 const router = Router();
 const commentsController = new CommentsController();
 
+// GET /api/forums/:forumCode/comments - Get all comments for a forum (public)
+router.get('/:forumCode/comments', (req, res) => commentsController.getByForumCode(req, res));
+
 // POST /api/forums/:forumCode/comments - Create new comment (protected)
 router.post('/:forumCode/comments', authGuard, (req, res) => commentsController.create(req, res));
 
