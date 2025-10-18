@@ -4,7 +4,7 @@ import { User } from '../../auth/models/user.entity';
 @Entity('petitions')
 export class Petition {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   @Generated('uuid')

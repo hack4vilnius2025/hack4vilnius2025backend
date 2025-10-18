@@ -6,7 +6,7 @@ import { Petition } from './petition.entity';
 @Index(['userCode', 'petition'], { unique: true })
 export class PetitionApproval {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ length: 36, name: 'user_code' })
   userCode: string;
