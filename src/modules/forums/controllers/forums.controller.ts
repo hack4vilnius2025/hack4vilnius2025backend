@@ -76,7 +76,7 @@ export class ForumsController {
   async update(req: AuthRequest, res: Response): Promise<void> {
     try {
       const userCode = req.userCode;
-      const { forumCode } = req.params;
+      const { code } = req.params;
       const { title, body, address } = req.body;
 
       if (!userCode) {
@@ -84,7 +84,7 @@ export class ForumsController {
         return;
       }
 
-      if (!forumCode) {
+      if (!code) {
         res.status(400).json({ error: 'Forum code is required' });
         return;
       }
@@ -99,7 +99,7 @@ export class ForumsController {
 
       // Update forum using the service
       const updateForumService = new UpdateForumService();
-      const forum = await updateForumService.run(forumCode, userCode, {
+      const forum = await updateForumService.run(code, userCode, {
         title,
         body,
         address,
