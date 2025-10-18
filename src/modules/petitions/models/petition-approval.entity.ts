@@ -4,7 +4,7 @@ import { Petition } from './petition.entity';
 
 @Entity('petition_approvals')
 export class PetitionApproval {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column({ length: 36, name: 'user_code' })
