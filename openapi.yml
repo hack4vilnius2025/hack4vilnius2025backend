@@ -1812,6 +1812,66 @@ paths:
                     type: string
                     example: Internal server error
 
+    delete:
+      summary: Delete petition approval
+      description: Remove a petition approval (unapprove a petition)
+      tags:
+        - Petition Approvals
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: petitionCode
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique code of the petition to unapprove
+          example: 880e8400-e29b-41d4-a716-446655440004
+      responses:
+        '204':
+          description: Petition approval deleted successfully
+        '400':
+          description: Bad request - Missing required parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing required parameter: petitionCode
+        '401':
+          description: Unauthorized - No token provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not found - Petition, user, or approval does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Petition approval not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
+
 tags:
   - name: System
     description: System health and status endpoints
