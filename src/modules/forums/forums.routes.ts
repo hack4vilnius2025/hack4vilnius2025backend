@@ -11,5 +11,10 @@ router.post('/', authGuard, (req, res) => forumsController.create(req, res));
 // DELETE /api/forums/:code - Delete forum (protected)
 router.delete('/:code', authGuard, (req, res) => forumsController.delete(req, res));
 
+// Export user-specific forums router for mounting at /api/users
+export const userForumsRouter = Router();
+// GET /api/users/forums - Get current user's forums (protected)
+userForumsRouter.get('/forums', authGuard, (req, res) => forumsController.getUserForums(req, res));
+
 export default router;
 
