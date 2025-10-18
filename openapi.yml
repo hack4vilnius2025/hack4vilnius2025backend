@@ -1714,6 +1714,104 @@ paths:
                     type: string
                     example: Internal server error
 
+  /api/petitions/{petitionCode}/approvals:
+    post:
+      summary: Create petition approval
+      description: Approve a petition post
+      tags:
+        - Petition Approvals
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: petitionCode
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique code of the petition to approve
+          example: 880e8400-e29b-41d4-a716-446655440004
+      responses:
+        '201':
+          description: Petition approval created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userCode:
+                    type: string
+                    format: uuid
+                    example: 660e8400-e29b-41d4-a716-446655440001
+                  petitionCode:
+                    type: string
+                    format: uuid
+                    example: 880e8400-e29b-41d4-a716-446655440004
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2025-10-18T10:30:00.000Z
+        '400':
+          description: Bad request - Missing required parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing required parameter: petitionCode
+        '401':
+          description: Unauthorized - No token provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '403':
+          description: Forbidden - Cannot approve own petition
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Cannot approve your own petition
+        '404':
+          description: Not found - Petition or user does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Petition not found
+        '409':
+          description: Conflict - Petition already approved by this user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Petition already approved by this user
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
+
 tags:
   - name: System
     description: System health and status endpoints
@@ -1729,4 +1827,6 @@ tags:
     description: Forum comment management endpoints
   - name: Petitions
     description: Petition management endpoints
+  - name: Petition Approvals
+    description: Petition approval management endpoints
 
