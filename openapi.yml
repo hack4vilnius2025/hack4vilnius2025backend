@@ -640,10 +640,6 @@ paths:
                       type: string
                       format: date-time
                       example: 2025-10-18T10:30:00.000Z
-                    updatedAt:
-                      type: string
-                      format: date-time
-                      example: 2025-10-18T10:30:00.000Z
         '401':
           description: Unauthorized - No token provided
           content:
