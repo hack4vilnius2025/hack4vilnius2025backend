@@ -11,6 +11,7 @@ interface ForumWithUserInfo {
     title: string;
     body: string;
     address: string | null;
+    language: string;
     approvalCount: number;
     createdAt: Date;
     updatedAt: Date;
@@ -32,12 +33,13 @@ export class GetForumByCodeService {
         'forum.title as title',
         'forum.body as body',
         'forum.address as address',
+        'forum.language as language',
         'COUNT(approval.id) as approvalCount',
         'forum.createdAt as createdAt',
         'forum.updatedAt as updatedAt'
       ])
       .where('forum.code = :forumCode', { forumCode })
-      .groupBy('forum.id, forum.code, forum.userCode, user.name, user.image, forum.title, forum.body, forum.address, forum.createdAt, forum.updatedAt')
+      .groupBy('forum.id, forum.code, forum.userCode, user.name, user.image, forum.title, forum.body, forum.address, forum.language, forum.createdAt, forum.updatedAt')
       .getRawOne();
 
     if (!result) {
@@ -52,6 +54,7 @@ export class GetForumByCodeService {
       title: result.title,
       body: result.body,
       address: result.address,
+      language: result.language,
       approvalCount: parseInt(result.approvalcount) || 0,
       createdAt: result.createdat,
       updatedAt: result.updatedat

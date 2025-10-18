@@ -1,10 +1,11 @@
 import { AppDataSource } from '../../../data-source';
-import { Forum } from '../models/forum.entity';
+import { Forum, ForumLanguage } from '../models/forum.entity';
 
 export interface UpdateForumInput {
   title?: string;
   body?: string;
   address?: string;
+  language?: ForumLanguage;
 }
 
 export class UpdateForumService {
@@ -34,6 +35,9 @@ export class UpdateForumService {
     }
     if (input.address !== undefined) {
       forum.address = input.address;
+    }
+    if (input.language !== undefined) {
+      forum.language = input.language;
     }
 
     // Save updated forum

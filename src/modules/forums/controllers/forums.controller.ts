@@ -38,7 +38,7 @@ export class ForumsController {
         return;
       }
 
-      const { title, body, address } = req.body;
+      const { title, body, address, language } = req.body;
 
       // Validate required fields
       if (!title || !body) {
@@ -54,6 +54,7 @@ export class ForumsController {
         title,
         body,
         address,
+        language,
       });
 
       // Return success response (excluding id)
@@ -63,6 +64,7 @@ export class ForumsController {
         title: forum.title,
         body: forum.body,
         address: forum.address,
+        language: forum.language,
         createdAt: forum.createdAt,
       });
     } catch (error) {
@@ -78,7 +80,7 @@ export class ForumsController {
     try {
       const userCode = req.userCode;
       const { code } = req.params;
-      const { title, body, address } = req.body;
+      const { title, body, address, language } = req.body;
 
       if (!userCode) {
         res.status(401).json({ error: 'Unauthorized' });
@@ -91,9 +93,9 @@ export class ForumsController {
       }
 
       // At least one field must be provided for update
-      if (!title && !body && !address) {
+      if (!title && !body && !address && !language) {
         res.status(400).json({
-          error: 'At least one field (title, body, or address) must be provided for update',
+          error: 'At least one field (title, body, address, or language) must be provided for update',
         });
         return;
       }
@@ -104,6 +106,7 @@ export class ForumsController {
         title,
         body,
         address,
+        language,
       });
 
       // Return success response (excluding id)
@@ -113,6 +116,7 @@ export class ForumsController {
         title: forum.title,
         body: forum.body,
         address: forum.address,
+        language: forum.language,
         createdAt: forum.createdAt,
         updatedAt: forum.updatedAt,
       });
@@ -222,6 +226,7 @@ export class ForumsController {
         title: forum.title,
         body: forum.body,
         address: forum.address,
+        language: forum.language,
         approvalCount: forum.approvalCount,
         createdAt: forum.createdAt,
         updatedAt: forum.updatedAt,

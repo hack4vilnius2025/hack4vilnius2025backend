@@ -21,6 +21,7 @@ export interface ForumWithApprovalCount {
   title: string;
   body: string;
   address: string | null;
+  language: string;
   createdAt: Date;
   approvalCount: number;
 }
@@ -49,6 +50,7 @@ export class GetPaginatedForumsService {
         'forum.title',
         'forum.body',
         'forum.address',
+        'forum.language',
         'forum.createdAt',
         'COUNT(approval.id) as approvalCount'
       ])
@@ -60,6 +62,7 @@ export class GetPaginatedForumsService {
       .addGroupBy('forum.title')
       .addGroupBy('forum.body')
       .addGroupBy('forum.address')
+      .addGroupBy('forum.language')
       .addGroupBy('forum.createdAt')
       .orderBy('forum.createdAt', 'DESC')
       .skip(skip)
@@ -84,6 +87,7 @@ export class GetPaginatedForumsService {
       title: forum.forum_title,
       body: forum.forum_body,
       address: forum.forum_address,
+      language: forum.forum_language,
       createdAt: forum.forum_createdAt,
       approvalCount: parseInt(forum.approvalCount) || 0,
     }));
