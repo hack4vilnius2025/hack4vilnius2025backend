@@ -4,6 +4,7 @@ import { Forum } from '../models/forum.entity';
 export interface CreateForumInput {
   title: string;
   body: string;
+  address?: string;
 }
 
 export class CreateForumService {
@@ -15,6 +16,7 @@ export class CreateForumService {
       userCode,
       title: input.title,
       body: input.body,
+      address: input.address,
     });
 
     // Save forum to database

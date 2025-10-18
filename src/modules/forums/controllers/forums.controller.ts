@@ -36,7 +36,7 @@ export class ForumsController {
         return;
       }
 
-      const { title, body } = req.body;
+      const { title, body, address } = req.body;
 
       // Validate required fields
       if (!title || !body) {
@@ -51,6 +51,7 @@ export class ForumsController {
       const forum = await createForumService.run(userCode, {
         title,
         body,
+        address,
       });
 
       // Return success response (excluding id)
@@ -59,6 +60,7 @@ export class ForumsController {
         userCode: forum.userCode,
         title: forum.title,
         body: forum.body,
+        address: forum.address,
         createdAt: forum.createdAt,
       });
     } catch (error) {
@@ -132,6 +134,7 @@ export class ForumsController {
           userCode: forum.userCode,
           title: forum.title,
           body: forum.body,
+          address: forum.address,
           createdAt: forum.createdAt
         }))
       );

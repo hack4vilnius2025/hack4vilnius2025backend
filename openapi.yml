@@ -492,6 +492,10 @@ paths:
                         body:
                           type: string
                           example: This is the forum content
+                        address:
+                          type: string
+                          nullable: true
+                          example: 123 Main Street, Vilnius
                         createdAt:
                           type: string
                           format: date-time
@@ -563,6 +567,10 @@ paths:
                 body:
                   type: string
                   example: This is the forum content
+                address:
+                  type: string
+                  nullable: true
+                  example: 123 Main Street, Vilnius
       responses:
         '201':
           description: Forum created successfully
@@ -585,6 +593,10 @@ paths:
                   body:
                     type: string
                     example: This is the forum content
+                  address:
+                    type: string
+                    nullable: true
+                    example: 123 Main Street, Vilnius
                   createdAt:
                     type: string
                     format: date-time
@@ -734,6 +746,10 @@ paths:
                     body:
                       type: string
                       example: This is the forum content
+                    address:
+                      type: string
+                      nullable: true
+                      example: 123 Main Street, Vilnius
                     createdAt:
                       type: string
                       format: date-time
