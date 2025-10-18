@@ -486,6 +486,13 @@ paths:
                           type: string
                           format: uuid
                           example: 660e8400-e29b-41d4-a716-446655440001
+                        userName:
+                          type: string
+                          example: John Doe
+                        userImage:
+                          type: string
+                          nullable: true
+                          example: https://example.com/avatar.jpg
                         title:
                           type: string
                           example: My Forum Title
@@ -732,7 +739,7 @@ paths:
         - BearerAuth: []
       parameters:
         - in: path
-          name: forumCode
+          name: code
           required: true
           schema:
             type: string
@@ -743,20 +750,20 @@ paths:
         required: true
         content:
           application/json:
-             schema:
-               type: object
-               properties:
-                 title:
-                   type: string
-                   example: Updated Forum Title
-                 body:
-                   type: string
-                   example: Updated forum content
-                 address:
-                   type: string
-                   nullable: true
-                   example: 456 New Street, Vilnius
-       responses:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Updated Forum Title
+                body:
+                  type: string
+                  example: Updated forum content
+                address:
+                  type: string
+                  nullable: true
+                  example: 456 New Street, Vilnius
+      responses:
         '200':
           description: Forum updated successfully
           content:
@@ -772,34 +779,34 @@ paths:
                     type: string
                     format: uuid
                     example: 660e8400-e29b-41d4-a716-446655440001
-                   title:
-                     type: string
-                     example: Updated Forum Title
-                   body:
-                     type: string
-                     example: Updated forum content
-                   address:
-                     type: string
-                     nullable: true
-                     example: 456 New Street, Vilnius
-                   createdAt:
-                     type: string
-                     format: date-time
-                     example: 2025-10-18T10:30:00.000Z
-                   updatedAt:
-                     type: string
-                     format: date-time
-                     example: 2025-10-18T14:30:00.000Z
-         '400':
-           description: Bad request - Missing required fields or validation error
+                  title:
+                    type: string
+                    example: Updated Forum Title
+                  body:
+                    type: string
+                    example: Updated forum content
+                  address:
+                    type: string
+                    nullable: true
+                    example: 456 New Street, Vilnius
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2025-10-18T10:30:00.000Z
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: 2025-10-18T14:30:00.000Z
+        '400':
+          description: Bad request - Missing required fields or validation error
           content:
             application/json:
               schema:
                 type: object
-                 properties:
-                   error:
-                     type: string
-                     example: At least one field (title, body, or address) must be provided for update
+                properties:
+                  error:
+                    type: string
+                    example: At least one field (title, body, or address) must be provided for update
         '401':
           description: Unauthorized - No token provided
           content:
@@ -1053,6 +1060,13 @@ paths:
                       type: string
                       format: uuid
                       example: 660e8400-e29b-41d4-a716-446655440001
+                    userName:
+                      type: string
+                      example: John Doe
+                    userImage:
+                      type: string
+                      nullable: true
+                      example: https://example.com/avatar.jpg
                     title:
                       type: string
                       example: My Forum Title
@@ -1121,6 +1135,95 @@ paths:
                     type: string
                     example: Internal server error
 
+  /api/petitions:
+    post:
+      summary: Create new petition
+      description: Create a new petition
+      tags:
+        - Petitions
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  example: Fix Neighborhood Park
+                description:
+                  type: string
+                  example: We need to repair the playground equipment and add new benches
+                address:
+                  type: string
+                  nullable: true
+                  example: Park Street 15, Vilnius
+      responses:
+        '201':
+          description: Petition created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    format: uuid
+                    example: 880e8400-e29b-41d4-a716-446655440004
+                  userCode:
+                    type: string
+                    format: uuid
+                    example: 660e8400-e29b-41d4-a716-446655440001
+                  name:
+                    type: string
+                    example: Fix Neighborhood Park
+                  description:
+                    type: string
+                    example: We need to repair the playground equipment and add new benches
+                  address:
+                    type: string
+                    nullable: true
+                    example: Park Street 15, Vilnius
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2025-10-18T10:30:00.000Z
+        '400':
+          description: Bad request - Missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing required fields: name, description
+        '401':
+          description: Unauthorized - No token provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
+
 tags:
   - name: System
     description: System health and status endpoints
@@ -1132,4 +1235,6 @@ tags:
     description: Forum management endpoints
   - name: Forum Approvals
     description: Forum approval management endpoints
+  - name: Petitions
+    description: Petition management endpoints
 
