@@ -14,5 +14,8 @@ router.put('/', authGuard, (req, res) => usersController.updateProfile(req, res)
 // PATCH /api/users - Partially update user profile (protected)
 router.patch('/', authGuard, (req, res) => usersController.updateProfile(req, res));
 
+// DELETE /api/users - Soft delete user profile (protected)
+router.delete('/', authGuard, (req, res) => usersController.softDelete(req, res));
+
 export default router;
 
