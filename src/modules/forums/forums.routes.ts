@@ -8,5 +8,8 @@ const forumsController = new ForumsController();
 // POST /api/forums - Create new forum (protected)
 router.post('/', authGuard, (req, res) => forumsController.create(req, res));
 
+// PATCH /api/forums - Update forum (protected)
+router.patch('/', authGuard, (req, res) => forumsController.update(req, res));
+
 export default router;
 
