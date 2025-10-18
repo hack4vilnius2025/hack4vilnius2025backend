@@ -5,6 +5,7 @@ import { UpdateForumService } from '../domain/update-forum.service';
 import { DeleteForumService } from '../domain/delete-forum.service';
 import { GetUserForumsService } from '../domain/get-user-forums.service';
 import { GetPaginatedForumsService } from '../domain/get-paginated-forums.service';
+import { GetForumByCodeService } from '../domain/get-forum-by-code.service';
 
 export class ForumsController {
   async getPaginatedForums(req: Request, res: Response): Promise<void> {
@@ -190,6 +191,48 @@ export class ForumsController {
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ error: error.message });
+      } else {
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    }
+  }
+
+  async getByCode(req: Request, res: Response): Promise<void> {
+    try {
+      const { code } = req.params;
+
+      // Validate required parameter
+      if (!code) {
+        res.status(400).json({
+          error: 'Missing required parameter: code',
+        });
+        return;
+      }
+
+      // Get forum by code using the service
+      const getForumByCodeService = new GetForumByCodeService();
+      const forum = await getForumByCodeService.run(code);
+
+      // Return success response with user information and approval count
+      res.status(200).json({
+        code: forum.code,
+        userCode: forum.userCode,
+        userName: forum.userName,
+        userImage: forum.userImage,
+        title: forum.title,
+        body: forum.body,
+        address: forum.address,
+        approvalCount: forum.approvalCount,
+        createdAt: forum.createdAt,
+        updatedAt: forum.updatedAt,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message === 'Forum not found') {
+          res.status(404).json({ error: error.message });
+        } else {
+          res.status(400).json({ error: error.message });
+        }
       } else {
         res.status(500).json({ error: 'Internal server error' });
       }
