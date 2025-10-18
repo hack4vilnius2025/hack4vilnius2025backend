@@ -1,6 +1,5 @@
 import { AppDataSource } from '../../../data-source';
 import { Forum } from '../models/forum.entity';
-import { User } from '../../auth/models/user.entity';
 
 export interface UpdateForumInput {
   title?: string;
@@ -10,7 +9,6 @@ export interface UpdateForumInput {
 export class UpdateForumService {
   async run(forumCode: string, userCode: string, input: UpdateForumInput): Promise<Forum> {
     const forumRepository = AppDataSource.getRepository(Forum);
-    const userRepository = AppDataSource.getRepository(User);
 
     // Find forum by code
     const forum = await forumRepository.findOne({

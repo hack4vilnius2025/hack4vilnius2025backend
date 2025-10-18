@@ -9,7 +9,7 @@ const forumsController = new ForumsController();
 router.post('/', authGuard, (req, res) => forumsController.create(req, res));
 
 // PATCH /api/forums - Update forum (protected)
-router.patch('/', authGuard, (req, res) => forumsController.update(req, res));
+router.patch('/:code', authGuard, (req, res) => forumsController.update(req, res));
 
 // DELETE /api/forums/:code - Delete forum (protected)
 router.delete('/:code', authGuard, (req, res) => forumsController.delete(req, res));
