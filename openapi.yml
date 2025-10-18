@@ -1064,6 +1064,103 @@ paths:
                     type: string
                     example: Internal server error
 
+  /api/forums/{forumCode}/comments:
+    post:
+      summary: Create comment on forum
+      description: Add a comment to a specific forum post
+      tags:
+        - Comments
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: forumCode
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique code of the forum to comment on
+          example: 770e8400-e29b-41d4-a716-446655440002
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - commentText
+              properties:
+                commentText:
+                  type: string
+                  example: This is a great forum post!
+      responses:
+        '201':
+          description: Comment created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    format: uuid
+                    example: 880e8400-e29b-41d4-a716-446655440003
+                  userCode:
+                    type: string
+                    format: uuid
+                    example: 660e8400-e29b-41d4-a716-446655440001
+                  forumCode:
+                    type: string
+                    format: uuid
+                    example: 770e8400-e29b-41d4-a716-446655440002
+                  commentText:
+                    type: string
+                    example: This is a great forum post!
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2025-10-19T10:30:00.000Z
+        '400':
+          description: Bad request - Missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing required field: commentText
+        '401':
+          description: Unauthorized - No token provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not found - Forum or user does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Forum not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
+
   /api/users/forums:
     get:
       summary: Get current user's forums
@@ -1273,6 +1370,8 @@ tags:
     description: Forum management endpoints
   - name: Forum Approvals
     description: Forum approval management endpoints
+  - name: Comments
+    description: Forum comment management endpoints
   - name: Petitions
     description: Petition management endpoints
 
