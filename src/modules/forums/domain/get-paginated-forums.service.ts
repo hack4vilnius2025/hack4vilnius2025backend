@@ -16,6 +16,8 @@ export interface PaginatedForumsResponse {
 export interface ForumWithApprovalCount {
   code: string;
   userCode: string;
+  userName: string;
+  userImage: string | null;
   title: string;
   body: string;
   address: string | null;
@@ -37,10 +39,13 @@ export class GetPaginatedForumsService {
     // Get forums with approval counts using query builder
     const query = forumRepository
       .createQueryBuilder('forum')
+      .leftJoin('users', 'user', 'user.code = forum.userCode')
       .leftJoin('forum_approvals', 'approval', 'approval.forum_id = forum.id')
       .select([
         'forum.code',
         'forum.userCode',
+        'user.name as userName',
+        'user.image as userImage',
         'forum.title',
         'forum.body',
         'forum.address',
@@ -50,6 +55,8 @@ export class GetPaginatedForumsService {
       .groupBy('forum.id')
       .addGroupBy('forum.code')
       .addGroupBy('forum.userCode')
+      .addGroupBy('userName')
+      .addGroupBy('userImage')
       .addGroupBy('forum.title')
       .addGroupBy('forum.body')
       .addGroupBy('forum.address')
@@ -72,6 +79,8 @@ export class GetPaginatedForumsService {
     const formattedForums: ForumWithApprovalCount[] = forums.map((forum) => ({
       code: forum.forum_code,
       userCode: forum.forum_userCode,
+      userName: forum.userName,
+      userImage: forum.userImage,
       title: forum.forum_title,
       body: forum.forum_body,
       address: forum.forum_address,
