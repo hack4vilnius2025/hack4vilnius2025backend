@@ -955,6 +955,67 @@ paths:
                   error:
                     type: string
                     example: Missing required parameter: forumCode
+
+    delete:
+      summary: Delete forum approval
+      description: Remove a forum approval (unapprove a forum post)
+      tags:
+        - Forum Approvals
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: forumCode
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique code of the forum to unapprove
+          example: 770e8400-e29b-41d4-a716-446655440002
+      responses:
+        '204':
+          description: Forum approval deleted successfully
+        '400':
+          description: Bad request - Missing required parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing required parameter: forumCode
+        '401':
+          description: Unauthorized - No token provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not found - Forum, user, or approval does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Forum approval not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
+
   /api/users/forums:
     get:
       summary: Get current user's forums
