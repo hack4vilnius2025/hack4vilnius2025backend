@@ -486,6 +486,13 @@ paths:
                           type: string
                           format: uuid
                           example: 660e8400-e29b-41d4-a716-446655440001
+                        userName:
+                          type: string
+                          example: John Doe
+                        userImage:
+                          type: string
+                          nullable: true
+                          example: https://example.com/avatar.jpg
                         title:
                           type: string
                           example: My Forum Title
@@ -635,7 +642,7 @@ paths:
                     type: string
                     example: Internal server error
 
-  /api/forums/{forumCode}:
+  /api/forums/{code}:
     patch:
       summary: Update forum
       description: Update an existing forum post (only by owner)
@@ -645,7 +652,7 @@ paths:
         - BearerAuth: []
       parameters:
         - in: path
-          name: forumCode
+          name: code
           required: true
           schema:
             type: string
@@ -966,6 +973,13 @@ paths:
                       type: string
                       format: uuid
                       example: 660e8400-e29b-41d4-a716-446655440001
+                    userName:
+                      type: string
+                      example: John Doe
+                    userImage:
+                      type: string
+                      nullable: true
+                      example: https://example.com/avatar.jpg
                     title:
                       type: string
                       example: My Forum Title
