@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 
 export interface AuthRequest extends Request {
-  userId?: string;
+  userCode?: string;
   email?: string;
 }
 
@@ -20,10 +20,10 @@ export const authGuard = (req: AuthRequest, res: Response, next: NextFunction): 
 
     // Verify token
     const jwtSecret = process.env.JWT_SECRET || 'default-secret';
-    const decoded = jwt.verify(token, jwtSecret) as { userId: string; email: string };
+    const decoded = jwt.verify(token, jwtSecret) as { userCode: string; email: string };
 
     // Attach user info to request
-    req.userId = decoded.userId;
+    req.userCode = decoded.userCode;
     req.email = decoded.email;
 
     next();
