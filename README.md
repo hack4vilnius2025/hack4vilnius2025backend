@@ -115,6 +115,8 @@ You can also view and edit the API documentation using [Swagger Editor](https://
 3. Paste the contents into the editor
 4. The documentation will be rendered on the right side
 
+> **Note:** For complete API documentation, please refer to the interactive Swagger UI at `/api-docs` or the `openapi.yml` file. Only core endpoints are listed below.
+
 ### API Endpoints
 
 #### Health Check
