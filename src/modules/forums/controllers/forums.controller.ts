@@ -222,12 +222,15 @@ export class ForumsController {
       const getForumByCodeService = new GetForumByCodeService();
       const forum = await getForumByCodeService.run(code);
 
-      // Return success response (excluding id and deletedAt)
+      // Return success response with user information
       res.status(200).json({
         code: forum.code,
         userCode: forum.userCode,
+        userName: forum.userName,
+        userImage: forum.userImage,
         title: forum.title,
         body: forum.body,
+        address: forum.address,
         createdAt: forum.createdAt,
         updatedAt: forum.updatedAt,
       });

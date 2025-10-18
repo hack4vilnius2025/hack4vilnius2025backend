@@ -666,12 +666,23 @@ paths:
                     type: string
                     format: uuid
                     example: 660e8400-e29b-41d4-a716-446655440001
+                  userName:
+                    type: string
+                    example: John Doe
+                  userImage:
+                    type: string
+                    nullable: true
+                    example: https://example.com/avatar.jpg
                   title:
                     type: string
                     example: My Forum Title
                   body:
                     type: string
                     example: This is the forum content
+                  address:
+                    type: string
+                    nullable: true
+                    example: 123 Main Street, Vilnius
                   createdAt:
                     type: string
                     format: date-time
