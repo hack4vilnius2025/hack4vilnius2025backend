@@ -6,7 +6,9 @@ export class Forum {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({ length: 36 })
     @Generated('uuid')
+    @Index()
     code: string;
 
     @Column({ length: 36, name: 'user_code' })
