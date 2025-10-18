@@ -1,5 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { User } from '../../auth/models/user.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, Index } from 'typeorm';
 import { Forum } from './forum.entity';
 
 @Entity('forum_approvals')
@@ -7,23 +6,18 @@ export class ForumApproval {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'uuid' })
-  userId: string;
-
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
+  @Column({ type: 'uuid', name: 'user_code' })
+  @Index()
+  userCode: string;
 
   @ManyToOne(() => Forum)
   @JoinColumn({ name: 'forum_id' })
   forum: Forum;
 
-  @Column({ type: 'uuid' })
-  forumId: string;
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }
 

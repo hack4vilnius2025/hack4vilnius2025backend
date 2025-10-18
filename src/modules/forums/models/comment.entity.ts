@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, Generated, Index } from 'typeorm';
-import { User } from '../../auth/models/user.entity';
 import { Forum } from './forum.entity';
 
 @Entity('comments')
@@ -12,27 +11,21 @@ export class Comment {
   @Index()
   code: string;
 
-  @Column({ type: 'uuid' })
-  userId: string;
-
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
-
-  @Column({ type: 'uuid' })
-  forumId: string;
+  @Column({ type: 'uuid', name: 'user_code' })
+  @Index()
+  userCode: string;
 
   @ManyToOne(() => Forum)
   @JoinColumn({ name: 'forum_id' })
-  forum: Forum;
+  forum: Forum;  
 
-  @Column('text')
+  @Column('text', { name: 'comment_text' })
   commentText: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }
 
