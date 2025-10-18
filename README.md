@@ -1,2 +1,149 @@
 # hack4vilnius2025backend
-backend for hack4vilnius2025
+
+Backend server with Express, TypeScript, and TypeORM using modularized monolith architecture.
+
+## 🏗️ Architecture
+
+This project follows a **modularized monolith** architecture with the following structure:
+
+```
+src/
+├── modules/
+│   ├── auth/
+│   │   ├── controllers/      # HTTP request handlers
+│   │   ├── domain/           # Business logic (interactors/services)
+│   │   ├── models/           # TypeORM entities
+│   │   └── auth.routes.ts    # Route definitions
+│   └── forums/
+│       ├── controllers/
+│       ├── domain/
+│       └── models/
+├── data-source.ts            # TypeORM configuration
+└── index.ts                  # Application entry point
+```
+
+### Key Patterns
+
+- **Interactor Pattern**: Services with a single public `run()` method handle business logic
+- **OOP Approach**: Class-based controllers and services
+- **TypeORM**: Object-Relational Mapping for database operations
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- Docker & Docker Compose
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Copy environment variables:
+   ```bash
+   cp env.example .env
+   ```
+
+4. Start the MySQL database:
+   ```bash
+   docker-compose up -d
+   ```
+
+5. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+The server will run on `http://localhost:3000`
+
+## 📝 Available Scripts
+
+- `npm run dev` - Start development server with hot reload
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run typeorm` - Run TypeORM CLI commands
+
+## 🗄️ Database
+
+The project uses MySQL 8.0 running in Docker. The database connection is configured through environment variables:
+
+- `DB_HOST` - Database host (default: localhost)
+- `DB_PORT` - Database port (default: 3306)
+- `DB_USERNAME` - Database username (default: root)
+- `DB_PASSWORD` - Database password (default: password)
+- `DB_DATABASE` - Database name (default: main)
+
+### Managing Docker Database
+
+Start database:
+```bash
+docker-compose up -d
+```
+
+Stop database:
+```bash
+docker-compose down
+```
+
+Stop and remove data:
+```bash
+docker-compose down -v
+```
+
+## 📚 API Endpoints
+
+### Health Check
+- `GET /health` - Check server status
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "password123",
+    "firstName": "John",
+    "lastName": "Doe",
+    "address": "123 Main St" // optional
+  }
+  ```
+
+## 🔧 Development
+
+### Adding a New Module
+
+1. Create module folder structure:
+   ```
+   src/modules/your-module/
+   ├── controllers/
+   ├── domain/
+   └── models/
+   ```
+
+2. Create entities in `models/` (e.g., `entity-name.entity.ts`)
+3. Create services in `domain/` (e.g., `create-entity.service.ts`)
+4. Create controllers in `controllers/` (e.g., `your-module.controller.ts`)
+5. Create routes file (e.g., `your-module.routes.ts`)
+6. Register routes in `src/index.ts`
+
+### Naming Conventions
+
+- **Services/Interactors**: `kebab-case.service.ts` (e.g., `create-user.service.ts`)
+- **Controllers**: `kebab-case.controller.ts` (e.g., `auth.controller.ts`)
+- **Entities**: `kebab-case.entity.ts` (e.g., `user.entity.ts`)
+- **Modules**: `kebab-case` (e.g., `auth`, `forums`)
+
+## 📦 Technology Stack
+
+- **Express.js** - Web framework
+- **TypeScript** - Type-safe JavaScript
+- **TypeORM** - ORM for database operations
+- **MySQL** - Relational database
+- **Docker** - Containerization
+
+## 📄 License
+
+ISC
