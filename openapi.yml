@@ -7,6 +7,13 @@ servers:
   - url: http://localhost:3000
     description: Local development server
 
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
 paths:
   /health:
     get:
@@ -97,6 +104,72 @@ paths:
                   error:
                     type: string
                     example: Missing required fields
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
+
+  /api/auth/login:
+    post:
+      summary: Login user
+      description: Authenticate user and receive JWT access token
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  format: password
+                  example: password123
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '400':
+          description: Bad request - Missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing required fields
+        '401':
+          description: Unauthorized - Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid email or password
         '500':
           description: Internal server error
           content:

@@ -1,5 +1,6 @@
 import { AppDataSource } from '../../../data-source';
 import { User } from '../models/user.entity';
+import bcrypt from 'bcryptjs';
 
 export interface CreateUserInput {
   email: string;
@@ -21,10 +22,13 @@ export class CreateUserService {
       throw new Error('User with this email already exists');
     }
 
+    // Hash password
+    const hashedPassword = await bcrypt.hash(input.password, 10);
+
     // Create new user
     const user = userRepository.create({
       email: input.email,
-      password: input.password, // Note: In production, hash the password before storing
+      password: hashedPassword,
       name: input.name,
       address: input.address,
     });

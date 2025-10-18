@@ -131,6 +131,27 @@ You can also view and edit the API documentation using [Swagger Editor](https://
   }
   ```
 
+- `POST /api/auth/login` - Login and receive JWT access token
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "password123"
+  }
+  ```
+  Response:
+  ```json
+  {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+  ```
+
+#### Protected Routes
+
+For protected endpoints, include the JWT token in the Authorization header:
+```
+Authorization: Bearer <your-jwt-token>
+```
+
 ## 🔧 Development
 
 ### Adding a New Module
