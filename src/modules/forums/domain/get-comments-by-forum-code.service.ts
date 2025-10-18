@@ -1,7 +1,6 @@
 import { AppDataSource } from '../../../data-source';
 import { Comment } from '../models/comment.entity';
 import { Forum } from '../models/forum.entity';
-import { User } from '../../auth/models/user.entity';
 
 export interface CommentWithUser {
   code: string;
@@ -31,15 +30,15 @@ export class GetCommentsByForumCodeService {
     const comments = await commentRepository
       .createQueryBuilder('comment')
       .innerJoin('comment.forum', 'forum')
-      .innerJoin(User, 'user', 'user.code = comment.userCode')
+      .leftJoin('users', 'user', 'user.code = comment.userCode')
       .select([
         'comment.code',
         'comment.userCode', 
+        'user.name as userName',
+        'user.image as userImage',
         'comment.commentText',
         'comment.createdAt',
-        'comment.updatedAt',
-        'user.name',
-        'user.image'
+        'comment.updatedAt'
       ])
       .where('forum.code = :forumCode', { forumCode })
       .orderBy('comment.createdAt', 'ASC')
@@ -48,12 +47,12 @@ export class GetCommentsByForumCodeService {
     // Map comments to the response format
     return comments.map(comment => ({
       code: comment.comment_code,
-      userCode: comment.comment_userCode,
-      userName: comment.user_name,
-      userImage: comment.user_image,
-      commentText: comment.comment_commentText,
-      createdAt: comment.comment_createdAt,
-      updatedAt: comment.comment_updatedAt,
+      userCode: comment.comment_user_code,
+      userName: comment.userName,
+      userImage: comment.userImage,
+      commentText: comment.comment_comment_text,
+      createdAt: comment.comment_created_at,
+      updatedAt: comment.comment_updated_at,
     }));
   }
 }

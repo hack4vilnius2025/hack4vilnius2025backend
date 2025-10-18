@@ -37,7 +37,7 @@ export class GetPaginatedPetitionsService {
     const skip = (validPage - 1) * validLimit;
     
     // Get petitions with approval counts using query builder
-    const query = petitionRepository
+    const petitions = await petitionRepository
       .createQueryBuilder('petition')
       .leftJoin('users', 'user', 'user.code = petition.userCode')
       .leftJoin('petition_approvals', 'approval', 'approval.petition_id = petition.id')
@@ -62,10 +62,9 @@ export class GetPaginatedPetitionsService {
       .addGroupBy('petition.address')
       .addGroupBy('petition.createdAt')
       .orderBy('petition.createdAt', 'DESC')
-      .skip(skip)
-      .take(validLimit);
-    
-    const petitions = await query.getRawMany();
+      .limit(validLimit)
+      .offset(skip)
+      .getRawMany();
     
     // Get total count for pagination metadata
     const totalItems = await petitionRepository.count();
