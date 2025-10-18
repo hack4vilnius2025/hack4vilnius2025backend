@@ -3,7 +3,7 @@ import { User } from '../../auth/models/user.entity';
 
 @Entity('petitions')
 export class Petition {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
@@ -11,12 +11,9 @@ export class Petition {
   @Index()
   code: string;
 
-  @Column({ type: 'uuid' })
-  userId: string;
-
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'userId' })
-  user: User;
+  @Column({ length: 36, name: 'user_code' })
+  @Index()
+  userCode: string;
 
   @Column()
   name: string;
@@ -27,10 +24,10 @@ export class Petition {
   @Column({ nullable: true })
   address: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }
 

@@ -7,14 +7,11 @@ export class PetitionApproval {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'uuid' })
-  userId: string;
-
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'userId' })
-  user: User;
+  @Column({ length: 36, name: 'user_code' })
+  userCode: string;
 
   @ManyToOne(() => Petition)
+  @JoinColumn({ name: 'petition_id' })
   petition: Petition;
 
   @CreateDateColumn()
