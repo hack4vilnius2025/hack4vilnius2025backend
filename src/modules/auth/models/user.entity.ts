@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Generated } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Generated, Index } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -7,6 +7,7 @@ export class User {
 
   @Column()
   @Generated('uuid')
+  @Index()
   code: string;
 
   @Column({ unique: true })
@@ -20,6 +21,9 @@ export class User {
 
   @Column({ nullable: true })
   address: string;
+
+  @Column({ nullable: true })
+  image: string;
 
   @CreateDateColumn()
   createdAt: Date;
