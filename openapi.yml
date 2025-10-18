@@ -635,6 +635,82 @@ paths:
                     type: string
                     example: Internal server error
 
+  /api/forums/{code}:
+    get:
+      summary: Get forum by code
+      description: Retrieve a specific forum post by its unique code
+      tags:
+        - Forums
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique code of the forum to retrieve
+          example: 770e8400-e29b-41d4-a716-446655440002
+      responses:
+        '200':
+          description: Forum retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    format: uuid
+                    example: 770e8400-e29b-41d4-a716-446655440002
+                  userCode:
+                    type: string
+                    format: uuid
+                    example: 660e8400-e29b-41d4-a716-446655440001
+                  title:
+                    type: string
+                    example: My Forum Title
+                  body:
+                    type: string
+                    example: This is the forum content
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2025-10-18T10:30:00.000Z
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: 2025-10-18T14:30:00.000Z
+        '400':
+          description: Bad request - Missing required parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing required parameter: code
+        '404':
+          description: Not found - Forum does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Forum not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
+
   /api/forums/{forumCode}:
     patch:
       summary: Update forum

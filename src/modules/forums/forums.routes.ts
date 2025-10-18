@@ -8,6 +8,9 @@ const forumsController = new ForumsController();
 // GET /api/forums - Get paginated forums with approval counts (public)
 router.get('/', (req, res) => forumsController.getPaginatedForums(req, res));
 
+// GET /api/forums/:code - Get forum by code (public)
+router.get('/:code', (req, res) => forumsController.getByCode(req, res));
+
 // POST /api/forums - Create new forum (protected)
 router.post('/', authGuard, (req, res) => forumsController.create(req, res));
 
