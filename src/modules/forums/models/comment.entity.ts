@@ -19,7 +19,11 @@ export class Comment {
   @JoinColumn({ name: 'userId' })
   user: User;
 
+  @Column({ type: 'uuid' })
+  forumId: string;
+
   @ManyToOne(() => Forum)
+  @JoinColumn({ name: 'forumId' })
   forum: Forum;
 
   @Column('text')
