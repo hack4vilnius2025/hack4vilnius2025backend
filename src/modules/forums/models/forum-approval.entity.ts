@@ -15,8 +15,11 @@ export class ForumApproval {
   user: User;
 
   @ManyToOne(() => Forum)
+  @JoinColumn({ name: 'forumId' })
   forum: Forum;
 
+  @Column({ type: 'uuid' })
+  forumId: string;
   @CreateDateColumn()
   createdAt: Date;
 
