@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, Generated, Index, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { User } from "../../auth/models/user.entity";
 
 @Entity('forums')
 export class Forum {
@@ -8,8 +9,9 @@ export class Forum {
     @Generated('uuid')
     code: string;
 
-    @Column({ name: 'user_id' })
-    userId: number;
+    @Column({ length: 36, name: 'user_code' })
+    @Index()
+    userCode: string;
 
     @Column({ name: 'title' })
     title: string;
