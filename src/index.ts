@@ -9,6 +9,7 @@ import authRoutes from './modules/auth/auth.routes';
 import usersRoutes from './modules/auth/users.routes';
 import forumApprovalsRoutes from './modules/forums/forum-approvals.routes';
 import forumsRoutes, { userForumsRouter } from './modules/forums/forums.routes';
+import commentsRoutes from './modules/forums/comments.routes';
 import petitionsRoutes from './modules/petitions/petitions.routes';
 
 const app: Application = express();
@@ -41,6 +42,7 @@ app.use('/api/users', usersRoutes);
 app.use('/api/users', userForumsRouter); // Mount user forums routes at /api/users/forums
 app.use('/api/forums', forumsRoutes);
 app.use('/api/forums', forumApprovalsRoutes);
+app.use('/api/forums', commentsRoutes);
 app.use('/api/petitions', petitionsRoutes);
 
 AppDataSource.initialize()
