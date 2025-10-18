@@ -83,8 +83,6 @@ export class ForumApprovalsController {
           if (error instanceof Error) {
             if (error.message === 'Forum not found') {
               res.status(404).json({ error: error.message });
-            } else if (error.message === 'User not found') {
-              res.status(404).json({ error: error.message });
             } else if (error.message === 'Forum approval not found') {
               res.status(404).json({ error: error.message });
             } else {
