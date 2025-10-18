@@ -6,6 +6,7 @@ import path from 'path';
 import { AppDataSource } from './data-source';
 import authRoutes from './modules/auth/auth.routes';
 import usersRoutes from './modules/auth/users.routes';
+import forumsRoutes from './modules/forums/forums.routes';
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
@@ -26,6 +27,7 @@ app.get('/health', (req, res) => {
 // Register module routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/forums', forumsRoutes);
 
 AppDataSource.initialize()
   .then(() => {
