@@ -357,7 +357,7 @@ paths:
                     type: string
                     example: Internal server error
 
-  /api/users/soft-delete:
+  /api/users/:
     delete:
       summary: Soft delete user
       description: Soft delete the authenticated user's account (marks as deleted without permanently removing data)
