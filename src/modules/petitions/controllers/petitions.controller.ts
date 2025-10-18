@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { AuthRequest } from '../../../middleware/auth.middleware';
 import { CreatePetitionService } from '../domain/create-petition.service';
 import { UpdatePetitionService } from '../domain/update-petition.service';
+import { DeletePetitionService } from '../domain/delete-petition.service';
 
 export class PetitionsController {
   async create(req: AuthRequest, res: Response): Promise<void> {
@@ -97,6 +98,46 @@ export class PetitionsController {
           res.status(404).json({ error: error.message });
         } else if (error.message === 'Only the creator can update this petition') {
           res.status(403).json({ error: error.message });
+        } else {
+          res.status(400).json({ error: error.message });
+        }
+      } else {
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    }
+  }
+
+  async delete(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      const userCode = req.userCode;
+
+      if (!userCode) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+      }
+
+      const { code } = req.params;
+
+      // Validate required parameter
+      if (!code) {
+        res.status(400).json({
+          error: 'Missing required parameter: code',
+        });
+        return;
+      }
+
+      // Delete petition using the interactor
+      const deletePetitionService = new DeletePetitionService();
+      await deletePetitionService.run(code, userCode);
+
+      // Return success response (204 No Content)
+      res.status(204).send();
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message.includes('Unauthorized')) {
+          res.status(403).json({ error: error.message });
+        } else if (error.message.includes('not found')) {
+          res.status(404).json({ error: error.message });
         } else {
           res.status(400).json({ error: error.message });
         }
