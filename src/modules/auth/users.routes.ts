@@ -5,6 +5,9 @@ import { authGuard } from '../../middleware/auth.middleware';
 const router = Router();
 const usersController = new UsersController();
 
+// GET /api/users - Get current user profile (protected)
+router.get('/', authGuard, (req, res) => usersController.getProfile(req, res));
+
 // PUT /api/users - Update user profile (protected)
 router.put('/', authGuard, (req, res) => usersController.updateProfile(req, res));
 
