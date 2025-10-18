@@ -1602,16 +1602,8 @@ paths:
           description: The unique code of the petition to delete
           example: 880e8400-e29b-41d4-a716-446655440004
       responses:
-        '200':
-          description: Petition deleted successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Petition deleted successfully
+        '204':
+          description: Petition deleted successfully (no content)
         '400':
           description: Bad request - Missing required parameter
           content:

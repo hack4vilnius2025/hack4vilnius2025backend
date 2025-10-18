@@ -130,10 +130,8 @@ export class PetitionsController {
       const deletePetitionService = new DeletePetitionService();
       await deletePetitionService.run(code, userCode);
 
-      // Return success response
-      res.status(200).json({
-        message: 'Petition deleted successfully',
-      });
+      // Return success response (204 No Content)
+      res.status(204).send();
     } catch (error) {
       if (error instanceof Error) {
         if (error.message.includes('Unauthorized')) {
