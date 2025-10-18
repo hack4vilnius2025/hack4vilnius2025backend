@@ -635,7 +635,7 @@ paths:
                     type: string
                     example: Internal server error
 
-  /api/forums/{forumCode}:
+  /api/forums/{code}:
     patch:
       summary: Update forum
       description: Update an existing forum post (only by owner)
@@ -645,7 +645,7 @@ paths:
         - BearerAuth: []
       parameters:
         - in: path
-          name: forumCode
+          name: code
           required: true
           schema:
             type: string
