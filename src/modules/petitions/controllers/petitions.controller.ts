@@ -1,10 +1,32 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { AuthRequest } from '../../../middleware/auth.middleware';
 import { CreatePetitionService } from '../domain/create-petition.service';
 import { UpdatePetitionService } from '../domain/update-petition.service';
 import { DeletePetitionService } from '../domain/delete-petition.service';
+import { GetPaginatedPetitionsService } from '../domain/get-paginated-petitions.service';
 
 export class PetitionsController {
+  async getPaginatedPetitions(req: Request, res: Response): Promise<void> {
+    try {
+      // Parse pagination parameters from query string
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      // Get paginated petitions with approval counts
+      const getPaginatedPetitionsService = new GetPaginatedPetitionsService();
+      const result = await getPaginatedPetitionsService.run(page, limit);
+
+      // Return success response
+      res.status(200).json(result);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({ error: error.message });
+      } else {
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    }
+  }
+
   async create(req: AuthRequest, res: Response): Promise<void> {
     try {
       const userCode = req.userCode;

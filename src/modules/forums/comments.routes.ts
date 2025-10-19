@@ -11,10 +11,10 @@ router.get('/:forumCode/comments', (req, res) => commentsController.getByForumCo
 // POST /api/forums/:forumCode/comments - Create new comment (protected)
 router.post('/:forumCode/comments', authGuard, (req, res) => commentsController.create(req, res));
 
-// PATCH /api/comments/:commentCode - Update comment (protected)
+// PATCH /api/forums/comments/:commentCode - Update comment (protected)
 router.patch('/comments/:commentCode', authGuard, (req, res) => commentsController.update(req, res));
 
-// DELETE /api/comments/:commentCode - Delete comment (protected)
+// DELETE /api/forums/comments/:commentCode - Delete comment (protected)
 router.delete('/comments/:commentCode', authGuard, (req, res) => commentsController.delete(req, res));
 
 export default router;
