@@ -11,6 +11,7 @@ import forumApprovalsRoutes from './modules/forums/forum-approvals.routes';
 import forumsRoutes, { userForumsRouter } from './modules/forums/forums.routes';
 import commentsRoutes from './modules/forums/comments.routes';
 import petitionsRoutes from './modules/petitions/petitions.routes';
+import agentRoutes from './modules/agent/agent.routes';
 import petitionApprovalsRoutes from './modules/petitions/petition-approvals.routes';
 
 const app: Application = express();
@@ -45,6 +46,7 @@ app.use('/api/forums', forumsRoutes);
 app.use('/api/forums', forumApprovalsRoutes);
 app.use('/api/forums', commentsRoutes);
 app.use('/api/petitions', petitionsRoutes);
+app.use('/api/agent', agentRoutes);
 app.use('/api/petitions', petitionApprovalsRoutes);
 
 AppDataSource.initialize()

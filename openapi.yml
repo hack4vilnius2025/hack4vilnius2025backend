@@ -1903,6 +1903,72 @@ paths:
                     type: string
                     example: Internal server error
 
+  /api/agent/generate:
+    post:
+      summary: Generate LLM response
+      description: Generate AI response using latest Gemini models (2.5 Flash, 2.0 Flash, etc.) with backend-configured context
+      tags:
+        - Agent
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - prompt
+              properties:
+                prompt:
+                  type: string
+                  example: What are the benefits of renewable energy?
+      responses:
+        '200':
+          description: LLM response generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: Renewable energy offers numerous benefits including reduced carbon emissions, energy independence, and long-term cost savings...
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: 2025-10-19T12:00:00.000Z
+        '400':
+          description: Bad request - Missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing required field: prompt
+        '401':
+          description: Unauthorized - No token provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '500':
+          description: Internal server error or AI service not configured
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: AI service not configured
+
   /api/petitions/{petitionCode}/approvals:
     post:
       summary: Create petition approval
@@ -2078,4 +2144,6 @@ tags:
     description: Petition management endpoints
   - name: Petition Approvals
     description: Petition approval management endpoints
+  - name: Agent
+    description: AI agent endpoints for LLM responses
 
