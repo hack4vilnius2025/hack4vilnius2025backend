@@ -65,8 +65,8 @@ export class GetPaginatedForumsService {
       .addGroupBy('forum.language')
       .addGroupBy('forum.createdAt')
       .orderBy('forum.createdAt', 'DESC')
-      .skip(skip)
-      .take(validLimit);
+      .limit(validLimit)
+      .offset(skip);
     
     const forums = await query.getRawMany();
     

@@ -1241,7 +1241,7 @@ paths:
                     type: string
                     example: Internal server error
 
-  /api/comments/{commentCode}:
+  /api/forums/comments/{commentCode}:
     patch:
       summary: Update comment
       description: Update a comment text (only by the creator)
@@ -1517,6 +1517,115 @@ paths:
                     example: Internal server error
 
   /api/petitions:
+    get:
+      summary: Get paginated petitions
+      description: Retrieve a paginated list of petitions with approval counts
+      tags:
+        - Petitions
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+          description: Page number for pagination
+          example: 1
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 100
+          description: Number of items per page (max 100)
+          example: 10
+      responses:
+        '200':
+          description: Petitions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  petitions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          format: uuid
+                          example: 880e8400-e29b-41d4-a716-446655440004
+                        userCode:
+                          type: string
+                          format: uuid
+                          example: 660e8400-e29b-41d4-a716-446655440001
+                        userName:
+                          type: string
+                          example: John Doe
+                        userImage:
+                          type: string
+                          nullable: true
+                          example: https://example.com/avatar.jpg
+                        name:
+                          type: string
+                          example: Fix Neighborhood Park
+                        description:
+                          type: string
+                          example: We need to repair the playground equipment
+                        address:
+                          type: string
+                          nullable: true
+                          example: Park Street 15, Vilnius
+                        createdAt:
+                          type: string
+                          format: date-time
+                          example: 2025-10-18T10:30:00.000Z
+                        approvalCount:
+                          type: integer
+                          example: 5
+                  pagination:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                        example: 1
+                      limit:
+                        type: integer
+                        example: 10
+                      totalItems:
+                        type: integer
+                        example: 25
+                      totalPages:
+                        type: integer
+                        example: 3
+                      hasNextPage:
+                        type: boolean
+                        example: true
+                      hasPreviousPage:
+                        type: boolean
+                        example: false
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Error retrieving petitions
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
     post:
       summary: Create new petition
       description: Create a new petition
@@ -1860,6 +1969,164 @@ paths:
                     type: string
                     example: AI service not configured
 
+  /api/petitions/{petitionCode}/approvals:
+    post:
+      summary: Create petition approval
+      description: Approve a petition post
+      tags:
+        - Petition Approvals
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: petitionCode
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique code of the petition to approve
+          example: 880e8400-e29b-41d4-a716-446655440004
+      responses:
+        '201':
+          description: Petition approval created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userCode:
+                    type: string
+                    format: uuid
+                    example: 660e8400-e29b-41d4-a716-446655440001
+                  petitionCode:
+                    type: string
+                    format: uuid
+                    example: 880e8400-e29b-41d4-a716-446655440004
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2025-10-18T10:30:00.000Z
+        '400':
+          description: Bad request - Missing required parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing required parameter: petitionCode
+        '401':
+          description: Unauthorized - No token provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '403':
+          description: Forbidden - Cannot approve own petition
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Cannot approve your own petition
+        '404':
+          description: Not found - Petition or user does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Petition not found
+        '409':
+          description: Conflict - Petition already approved by this user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Petition already approved by this user
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
+
+    delete:
+      summary: Delete petition approval
+      description: Remove a petition approval (unapprove a petition)
+      tags:
+        - Petition Approvals
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: petitionCode
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique code of the petition to unapprove
+          example: 880e8400-e29b-41d4-a716-446655440004
+      responses:
+        '204':
+          description: Petition approval deleted successfully
+        '400':
+          description: Bad request - Missing required parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing required parameter: petitionCode
+        '401':
+          description: Unauthorized - No token provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not found - Petition, user, or approval does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Petition approval not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error
+
 tags:
   - name: System
     description: System health and status endpoints
@@ -1875,6 +2142,8 @@ tags:
     description: Forum comment management endpoints
   - name: Petitions
     description: Petition management endpoints
+  - name: Petition Approvals
+    description: Petition approval management endpoints
   - name: Agent
     description: AI agent endpoints for LLM responses
 
