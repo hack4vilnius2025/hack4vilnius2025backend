@@ -13,11 +13,21 @@ const baseConfig = {
   subscribers: [],
 };
 
+// SSL configuration for production (StackHero requires SSL)
+const sslConfig = process.env.STACKHERO_MYSQL_DATABASE_URL || process.env.STACKHERO_MYSQL_HOST
+  ? {
+      ssl: {
+        rejectUnauthorized: false, // StackHero uses self-signed certificates
+      },
+    }
+  : {};
+
 // If StackHero URL is provided, use it; otherwise use individual parameters
 const dataSourceConfig: DataSourceOptions = process.env.STACKHERO_MYSQL_DATABASE_URL
   ? {
       ...baseConfig,
       url: process.env.STACKHERO_MYSQL_DATABASE_URL,
+      ...sslConfig,
     }
   : {
       ...baseConfig,
@@ -26,7 +36,7 @@ const dataSourceConfig: DataSourceOptions = process.env.STACKHERO_MYSQL_DATABASE
       username: process.env.DB_USERNAME || 'root',
       password: process.env.STACKHERO_MYSQL_ROOT_PASSWORD || process.env.DB_PASSWORD || 'password',
       database: process.env.DB_DATABASE || 'main',
+      ...sslConfig,
     };
 
 export const AppDataSource = new DataSource(dataSourceConfig);
-
