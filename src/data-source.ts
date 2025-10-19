@@ -8,8 +8,16 @@ const baseConfig = {
   type: 'mysql' as const,
   synchronize: true, // Set to false in production
   logging: process.env.NODE_ENV === 'development',
-  entities: ['src/modules/**/models/*.entity.ts'],
-  migrations: ['src/migrations/*.ts'],
+  entities: [
+    process.env.NODE_ENV === 'production'
+      ? 'dist/modules/**/models/*.entity.js'
+      : 'src/modules/**/models/*.entity.ts'
+  ],
+  migrations: [
+    process.env.NODE_ENV === 'production'
+      ? 'dist/migrations/*.js'
+      : 'src/migrations/*.ts'
+  ],
   subscribers: [],
 };
 
