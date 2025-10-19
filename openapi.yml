@@ -895,16 +895,8 @@ paths:
           description: The unique code of the forum to delete
           example: 770e8400-e29b-41d4-a716-446655440002
       responses:
-        '200':
-          description: Forum deleted successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Forum deleted successfully
+        '204':
+          description: Forum deleted successfully (no content)
         '400':
           description: Bad request - Missing required parameter
           content:
